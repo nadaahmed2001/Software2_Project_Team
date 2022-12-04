@@ -5,7 +5,7 @@ public class Orange extends Provider {
 	public double fees;
 
 	public Orange(){
-		fees = 10;
+		fees = 5;
 	}
 
 	public double totalFees(double amount) {

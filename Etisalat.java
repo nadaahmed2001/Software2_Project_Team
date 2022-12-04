@@ -4,7 +4,7 @@ public class Etisalat extends Provider{
 	public double amount;
 	public double fees;
 	public Etisalat(){
-		fees = 25;
+		fees = 5;
 	}
 
 

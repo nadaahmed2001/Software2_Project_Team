@@ -6,8 +6,9 @@ public class Admin {
 	String email;
 	String password;
 	Refund requestRefund;
-	Discount discount;
 	Service service;
+	public static boolean flag = false;
+	public static String type = "";
 	
 
 	public Boolean login(String email, String pass) {
@@ -24,24 +25,107 @@ public class Admin {
 	void AddServiceProvider(Provider provider) {
 	}
 
-	void AddDiscount(Discount discount) {
+	void AddDiscount() {
 		System.out.println("Choose: 1-Overall Discout   2-Specific Discount");
 		Scanner scan = new Scanner(System.in);
 		int n = scan.nextInt();
+		double d;
+		
 		switch(n){
-			case 1:
-				discount = new OverallDiscount();
+		case 1:
+
+			System.out.println("Enter the Discount: ");
+			d = scan.nextDouble();
+			
+			service =  MobileRechargeService.GetInstance();
+			service = new OverallDiscount(service );
+			service.AddDiscount(d);
+		
+			
+			
+			
+			service =  InternetPaymentService.GetInstance();
+			service = new OverallDiscount( service);
+			service.AddDiscount(d);
+		
+			
+			service =  LandlinesService.GetInstance();
+			service = new OverallDiscount( service);
+			service.AddDiscount(d);
+	
+			
+			
+			service =  DonationsService.GetInstance();
+			service = new OverallDiscount( service);
+			service.AddDiscount(d);
+			
+			flag = true;
+			type = "Overall Discount on MobileRecharge Service, InternetPayment Service, "
+					+ "Landlines Service, DonationsService";
+		
+	
+			
+			
+		break;
+		
+		case 2:
+				System.out.println("Choose Service to add discount:");
+				System.out.println("1-MobileRechargement Service \n 2-InternetPayment Service"
+						+ " \n 3-LAndlines Service \n 4-Donations Service");
+				
+
+				int option = scan.nextInt();
+				System.out.println("Enter the Discount: ");
+				d = scan.nextDouble();
+				
+				switch(option) {
+				
+				case 1:
+					service =  MobileRechargeService.GetInstance();
+					service = new SpecificDiscount( service);
+					service.AddDiscount(d);
+					flag = true;
+					type = "Specific Discount on MobileRecharge Service";
+
+				
+					break;
+				case 2:
+					service =  InternetPaymentService.GetInstance();
+					service = new SpecificDiscount( service);
+					service.AddDiscount(d);
+					flag = true;
+					type = "Specific Discount on InternetPayment Service";
+
+
+					break;
+				case 3:
+					service =  LandlinesService.GetInstance();
+					service = new SpecificDiscount( service);
+					service.AddDiscount(d);
+					flag = true;
+					type = "Specific Discount on Landlines Service";
+
+
+
+					 
+				break;
+				case 4:
+					
+					service =  DonationsService.GetInstance();
+					service = new SpecificDiscount( service);
+					service.AddDiscount(d);
+					flag = true;
+					type = "Specific Discount on Donations Service";
+
+					break;				
+				}
 				
 			break;
-			case 2:
-				discount = new SpecificDiscount();
-				//discount.addDiscount(0.05);
-				
-				
-			
+
 		}
 		
 	}
+
 
 	public void getListOfRefunds() {
 		System.out.println("List of Refunds: ");

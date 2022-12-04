@@ -1,4 +1,4 @@
-//import java.sql.Ref;
+
 import java.util.Scanner;
 
 public class User {
@@ -78,75 +78,82 @@ public class User {
 		int specificServiceNumber = 0;
 		String mobile;
 		double amount;
-		Service v1;
 		double TotalFees=0;
 		switch (servicenumber) {
 		
 		case 1:// mobile recharge
-			
-			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Mobinil \n 4- We");
+			MobileRechargeService v = MobileRechargeService.GetInstance();
+			scan.nextLine();
+			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Mobinil \n 4-We");
 			System.out.print("Select: ");
 			// Take input specificServiceNumber from user
+			
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
 
 			switch (specificServiceNumber) {
 			case 1: // vodafone
-			v1 = new MobileRechargeService("Vodafone" );
-			TotalFees = v1.GetTotalFees();
+				v.SetProvider("Vodafone");
+				TotalFees = v.GetTotalFees();
 			
 			
-		
 			break;
 			
 			case 2:
-				v1 = new MobileRechargeService("Etisalat" );
-				 TotalFees = v1.GetTotalFees();
-				
+				v.SetProvider("Etisalat");
+				TotalFees = v.GetTotalFees();
+		
 				
 			break;
 			case 3:
-				v1 = new MobileRechargeService("Orange" );
-				 TotalFees = v1.GetTotalFees();
+				v.SetProvider("Orange");
+				TotalFees = v.GetTotalFees();
+
 				
 			break;
 			case 4:
-				v1 = new MobileRechargeService("We" );
-				 TotalFees = v1.GetTotalFees();
+				v.SetProvider("We");
+				TotalFees = v.GetTotalFees();
+				
 				
 			}	
 			break;
 			
 			
 		case 2: // internet Payment services
-			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Mobinil \n 4- We");
+			
+			InternetPaymentService v2 = InternetPaymentService.GetInstance();
+			scan.nextLine();
+			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Mobinil \n 4-We");
 			System.out.print("Select: ");
+			
 			// Take input specificServiceNumber from user
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
 			
 			switch (specificServiceNumber) {
 			case 1: // vodafone
-			v1 = new InternetPaymentService("Vodafone" );
-			 TotalFees = v1.GetTotalFees();
-		
+				v2.SetProvider("Vodafone");
+				TotalFees = v2.GetTotalFees();
 		
 			break;
 			
 			case 2:
-				v1 = new InternetPaymentService("Etisalat" );
-				 TotalFees = v1.GetTotalFees();
+				v2.SetProvider("Etisalat");
+				TotalFees = v2.GetTotalFees();
 				
 				
 			break;
 			case 3:
-				v1 = new InternetPaymentService("Orange" );
-				 TotalFees = v1.GetTotalFees();
+				v2.SetProvider("Orange");
+				TotalFees = v2.GetTotalFees();
+				
 				
 			break;
 			case 4:
-				v1 = new InternetPaymentService("We" );
-				 TotalFees = v1.GetTotalFees();
+				
+				v2.SetProvider("We");
+				TotalFees = v2.GetTotalFees();
 			
 			break;
 			}
@@ -155,25 +162,33 @@ public class User {
 			
 		
 		case 3: // Landline Service
+			
+			LandlinesService v3 = LandlinesService.GetInstance();
+			scan.nextLine();
 			System.out.println("Choose:\n 1-Monthly Receipt \n 2-Quarter Receipt \n ");
 			System.out.print("Select: ");
+			
 			// Take input specificServiceNumber from user
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
+			
 			System.out.print("Enter Amount: ");
 			amount = scan.nextDouble();
 			scan.nextLine();
 			
 			switch (specificServiceNumber) {
 				case 1: //Monthly Receipt
-				v1 = new LandlinesService("Monthly Receipt" , amount);
-				 TotalFees = v1.GetTotalFees();
-			
-				break;
-				case 2:
-					v1 = new LandlinesService("Quarter Receipt", amount);
-					 TotalFees = v1.GetTotalFees();
+					v3.SetLandlinesFactory("Monthly Receipt" , amount);
+					TotalFees = v3.GetTotalFees();
 					
+
+				break;
+				
+				case 2:
+					
+					v3.SetLandlinesFactory("Quarter Receipt" , amount);
+					TotalFees = v3.GetTotalFees();
+
 					
 				break;
 		
@@ -182,31 +197,41 @@ public class User {
 			break;
 			
 		case 4: // Donations
+			
+			DonationsService v4 = DonationsService.GetInstance();
+			scan.nextLine();
 			System.out.println("Choose:\n 1-NGOs \n 2-School \n 3-Canser Hospital \n ");
 			System.out.print("Select: ");
+			
 			// Take input specificServiceNumber from user
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
+			
 			System.out.print("Enter Amount: ");
 			amount = scan.nextDouble();
 			scan.nextLine();
 			
 			switch (specificServiceNumber) {
 				case 1:
-				v1 = new DonationsService("NGOs" , amount);
-				 TotalFees = v1.GetTotalFees();
-				 //v1.discount.addDiscount();
+					
+					v4.SetDonationFactory("NGOs" , amount);
+					TotalFees = v4.GetTotalFees();
+					
 			
 				break;
+				
 				case 2:
-					v1 = new DonationsService("School", amount);
-					 TotalFees = v1.GetTotalFees();
+					
+					v4.SetDonationFactory("School" , amount);
+					TotalFees = v4.GetTotalFees();
 					
 					
 				break;
+				
 				case 3:
-					v1 = new DonationsService("CancerHospital"  , amount);
-					 TotalFees = v1.GetTotalFees();
+					v4.SetDonationFactory("CancerHospital" , amount);
+					TotalFees = v4.GetTotalFees();
+
 					
 				break;
 			}
@@ -219,12 +244,14 @@ public class User {
 		
 		String option = "";
 		// Take option input from user
+		scan.nextLine();
 		System.out.println("Choose the payment method: 1-Credit card   2-Wallet");
 		
 		option = scan.nextLine();
 		// Choose between credit card or wallet
 		switch (option) {
 		case "1":
+			
 			System.out.println("Enter Credit card number: ");
 			String creditNum = scan.next();
 			if(creditNum.length()==16) {
@@ -265,14 +292,20 @@ public class User {
 		this.refund.addRefundToArrayList(refund);
 	}
 
-	void AddToWallet(double amount) {
+	public void AddToWallet(double amount) {
 		// Get money from credit card
 
 		// If success, Add amount to wallet
 		wallet.amount += amount;
 	}
 
-	void CheckDiscount(String serviceName) {
+	public void CheckDiscount() {
+		if(Admin.flag == false) {
+			System.out.println("There is no Discount rightnow..");
+		}else {
+			System.out.println("There is "+Admin.type);
+		}
+		
 	}
 	
 

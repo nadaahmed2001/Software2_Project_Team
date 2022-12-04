@@ -18,6 +18,10 @@ public class DataBase {
 		AdminInfo[0][1] = "20200632";
 		AdminInfo[1][0] = "eman@gmail.com";
 		AdminInfo[1][1] = "20200104";
+		AdminInfo[2][0] = "Nada@gmail.com";
+		AdminInfo[2][1] = "20190578";
+		AdminInfo[3][0] = "Hadeer@gmail.com";
+		AdminInfo[3][1] = "20201210";
 		for (int i = 0; i < 20; i++) {
 			if (AdminInfo[i][0].equals(Email))
 				return true;

@@ -1,11 +1,21 @@
-
-public class OverallDiscount  implements Discount  {
+public class OverallDiscount  extends DiscountDecorator  {
+		
+	Service service;
+	public OverallDiscount(Service service) {
+	
+		this.service = service;
+	}
 
 	
-	public double addDiscount( double discount) {
-		return discount;
+	public void AddDiscount(double discount) {
+	
+		service.AddDiscount(discount);
 		
-		//return service.GetTotalFees()-0.05;
+	}
+	public double GetTotalFees() {
+		
+		return super.GetTotalFees();
 	}
 
 }
+

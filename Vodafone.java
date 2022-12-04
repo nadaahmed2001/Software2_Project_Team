@@ -4,7 +4,7 @@ public class Vodafone extends Provider {
 	public double amount;
 	public double fees;
 	public Vodafone(){
-		fees=20;
+		fees=5;
 	}
 	
     public double totalFees(double amount) {

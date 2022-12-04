@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class PaymentSystem {
 
-	private static final Discount Discount = null;
+	
 
 	public static void main(String[] args) {
 
@@ -15,16 +15,19 @@ public class PaymentSystem {
 		do {
 			System.out.print("Enter 1:Admin | 2:User: ");
 			int choiceAorU = scan.nextInt();
-			scan.nextLine();
+			
 			if (choiceAorU == 1) {
+				
 				System.out.print("Enter 1:Login | 2:Exit: ");
 				AorU = '2';
 			} else {
+				
 				System.out.print("Enter 0:SignUp | 1:Login | 2:Exit: ");
 				AorU = '1';
 			}
 			int choice = scan.nextInt();
 			scan.nextLine();
+			
 			if (choice == 1) {
 				System.out.print("Enter Email: ");
 				String Email = scan.nextLine();
@@ -50,7 +53,8 @@ public class PaymentSystem {
 				break;
 			if (registerAccepted) {
 				if (AorU == '2') {// admin functionality
-					System.out.println("1: Add Discount");
+					
+					System.out.println("\n1: Add Discount");
 					System.out.println("2: Show List of Requests Refunds");
 					System.out.println("3: Edit List of Requests Refunds");
 					System.out.print("Select: ");
@@ -60,7 +64,7 @@ public class PaymentSystem {
 						
 					if (select==1) {
 						
-						admin.AddDiscount(Discount);
+						admin.AddDiscount();
 						
 					}else if(select==2) {
 						admin.getListOfRefunds();
@@ -79,10 +83,11 @@ public class PaymentSystem {
 					}
 					
 				} else if(AorU =='1'){// user functionality
-					System.out.println("1: Search Service");
+					System.out.println("\n1: Search Service");
 					System.out.println("2: Show Wallet");
 					System.out.println("3: Add request refund");
 					System.out.println("4: Pay with special service");
+					System.out.println("5: Check Discount");
 					System.out.print("Select: ");
 					int select = scan.nextInt();
 					scan.nextLine();
@@ -102,6 +107,7 @@ public class PaymentSystem {
 						scan.nextLine();
 						user.RequestRefund(serviceName, amount);
 					}else if(select==4) {
+					
 						System.out.println("Enter Service Number: ");
 						System.out.println("1-Mobile recharge services.");
 						System.out.println("2-Internet Payment services.");
@@ -111,6 +117,9 @@ public class PaymentSystem {
 						int n=scan.nextInt();
 						user.pay(n);
 						
+					}else {
+						
+						user.CheckDiscount();
 					}
 				}
 			}
