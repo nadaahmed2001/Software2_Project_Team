@@ -1,17 +1,13 @@
 
-public class We implements Provider {
+public class We extends Provider {
 	public String mobileNum ;
 	public double amount;
 	public double fees;
-	public We(String mobileNum, double amount){
-		this.amount = amount;
-		this.mobileNum = mobileNum;
+	public We(){
 		fees = 5;
 	}
 
-
-	public double totalFees() {
-		
+	public double totalFees(double amount) {
 		return fees+ amount;
 	}
 }

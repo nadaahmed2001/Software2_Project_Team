@@ -1,17 +1,14 @@
 
-public class Orange implements Provider {
+public class Orange extends Provider {
 	public String mobileNum ;
 	public double amount;
 	public double fees;
 
-	public Orange(String mobileNum, double amount){
-		this.amount = amount;
-		this.mobileNum = mobileNum;
+	public Orange(){
 		fees = 10;
 	}
 
-	public double totalFees() {
-		
+	public double totalFees(double amount) {
 		return fees+ amount;
 	}
 }

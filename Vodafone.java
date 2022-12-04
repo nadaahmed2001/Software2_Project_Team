@@ -1,16 +1,13 @@
 
-public class Vodafone implements Provider {
+public class Vodafone extends Provider {
 	public String mobileNum  ;
 	public double amount;
 	public double fees;
-	public Vodafone(String mobileNum, double amount){
-		this.amount = amount;
-		this.mobileNum = mobileNum;
+	public Vodafone(){
 		fees=20;
 	}
 	
-	public double totalFees() {
-		
-		return amount + fees;
+    public double totalFees(double amount) {
+		return fees+ amount;
 	}
 }

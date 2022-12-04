@@ -8,22 +8,22 @@ public class MobileRechargeService implements Service {
 			this.fees =  fees;
 		}
 	
-	public MobileRechargeService(String type , String mobile , double amount) {
+	public MobileRechargeService(String type) {
+
 		if (type.equals("Vodafone")) 
-			provider = new Vodafone(mobile , amount);
-		
+			provider = new Vodafone();
 		else if (type.equals("Etisalat")) 
-			provider = new Etisalat(mobile , amount);
+			provider = new Etisalat();
 		
-		else if (type.equals("Orange")) 
-			provider = new Orange(mobile , amount);
+    	else if (type.equals("Orange")) 
+			provider = new Orange();
 		
-	   else if (type.equals("We")) 
-			provider = new We(mobile , amount);
+	    else if (type.equals("We")) 
+			provider = new We();
 		
 	}
 	public double GetTotalFees() {
-		return provider.totalFees();
+		return provider.templete();
 	}
 	
 }

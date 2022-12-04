@@ -85,79 +85,67 @@ public class User {
 		case 1:// mobile recharge
 			
 			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Mobinil \n 4- We");
-	
+			System.out.print("Select: ");
 			// Take input specificServiceNumber from user
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
-			
-			System.out.print("Enter mobile number: ");
-			mobile = scan.next();
-			System.out.print("Enter Amount: ");
-			amount = scan.nextDouble();
-			scan.nextLine();
-			
+
 			switch (specificServiceNumber) {
 			case 1: // vodafone
-			v1 = new MobileRechargeService("Vodafone" , mobile , amount);
-			 TotalFees = v1.GetTotalFees();
+			v1 = new MobileRechargeService("Vodafone" );
+			TotalFees = v1.GetTotalFees();
 			
 			
 		
 			break;
 			
 			case 2:
-				v1 = new MobileRechargeService("Etisalat" , mobile , amount);
+				v1 = new MobileRechargeService("Etisalat" );
 				 TotalFees = v1.GetTotalFees();
 				
 				
 			break;
 			case 3:
-				v1 = new MobileRechargeService("Orange" , mobile , amount);
+				v1 = new MobileRechargeService("Orange" );
 				 TotalFees = v1.GetTotalFees();
 				
 			break;
 			case 4:
-				v1 = new MobileRechargeService("We" , mobile , amount);
+				v1 = new MobileRechargeService("We" );
 				 TotalFees = v1.GetTotalFees();
 				
-				
+			}	
 			break;
 			
-			}
+			
 		case 2: // internet Payment services
 			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Mobinil \n 4- We");
-			
+			System.out.print("Select: ");
 			// Take input specificServiceNumber from user
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
 			
-			System.out.print("Enter mobile number: ");
-			mobile = scan.next();
-			System.out.print("Enter Amount: ");
-			amount = scan.nextDouble();
-			scan.nextLine();
-			
 			switch (specificServiceNumber) {
 			case 1: // vodafone
-			v1 = new InternetPaymentService("Vodafone" , mobile , amount);
+			v1 = new InternetPaymentService("Vodafone" );
 			 TotalFees = v1.GetTotalFees();
 		
 		
 			break;
 			
 			case 2:
-				v1 = new InternetPaymentService("Etisalat" , mobile , amount);
+				v1 = new InternetPaymentService("Etisalat" );
 				 TotalFees = v1.GetTotalFees();
 				
 				
 			break;
 			case 3:
-				v1 = new InternetPaymentService("Orange" , mobile , amount);
+				v1 = new InternetPaymentService("Orange" );
 				 TotalFees = v1.GetTotalFees();
 				
 			break;
 			case 4:
-				v1 = new InternetPaymentService("We" , mobile , amount);
+				v1 = new InternetPaymentService("We" );
 				 TotalFees = v1.GetTotalFees();
 			
 			break;
@@ -168,7 +156,7 @@ public class User {
 		
 		case 3: // Landline Service
 			System.out.println("Choose:\n 1-Monthly Receipt \n 2-Quarter Receipt \n ");
-			
+			System.out.print("Select: ");
 			// Take input specificServiceNumber from user
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
@@ -195,7 +183,7 @@ public class User {
 			
 		case 4: // Donations
 			System.out.println("Choose:\n 1-NGOs \n 2-School \n 3-Canser Hospital \n ");
-			
+			System.out.print("Select: ");
 			// Take input specificServiceNumber from user
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
@@ -243,7 +231,6 @@ public class User {
 				if (this.credit.amount >= TotalFees ) {
 					this.credit.TakeFromCredit(this, TotalFees);
 					System.out.println("TotalFees is = " + TotalFees);
-					//System.out.println("Credit amount : " + this.credit.ShowCreditCard(this));
 				}else
 					System.out.println("There is not enough money in your credit card!");
 			}else {
@@ -266,8 +253,8 @@ public class User {
 		}
 		
 	
-
-	}
+		}
+	
 
 	public void RequestRefund(String serviceName, double amount) {
 		this.refund = new Refund();

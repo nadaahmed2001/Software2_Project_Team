@@ -1,17 +1,14 @@
 
-public class Etisalat implements Provider{
+public class Etisalat extends Provider{
 	public String mobileNum;
 	public double amount;
 	public double fees;
-	public Etisalat(String mobileNum, double amount){
-		this.amount = amount;
-		this.mobileNum = mobileNum;
+	public Etisalat(){
 		fees = 25;
 	}
 
 
-	public double totalFees() {
-		
+	public double totalFees(double amount) {
 		return fees+ amount;
 	}
 }

@@ -61,8 +61,6 @@ public class Admin {
 					DataBase.AllRefundRequests.get(i).user.wallet=new Wallet();
 					for (int j = 0; j < 50; j++) {
 						if (DataBase.userInfo[j][0].equals(DataBase.AllRefundRequests.get(i).user.email)) {
-							System.out.print("Amount: "+DataBase.AllRefundRequests.get(i).amount);
-							System.out.print("Amountst: "+Double.valueOf(DataBase.userInfo[j][2]));
 							DataBase.userInfo[j][2]=String.valueOf(DataBase.AllRefundRequests.get(i).amount + Double.valueOf(DataBase.userInfo[j][2]));
 						}
 	

@@ -5,7 +5,4 @@ public interface Service  {
 	//public Discount discount=null;
 	public double GetTotalFees();
 	public void Setfees(double fees);
-
-	
- 
 }

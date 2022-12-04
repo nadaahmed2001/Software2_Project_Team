@@ -81,9 +81,8 @@ public class PaymentSystem {
 				} else if(AorU =='1'){// user functionality
 					System.out.println("1: Search Service");
 					System.out.println("2: Show Wallet");
-					System.out.println("3: Show creditCard");
-					System.out.println("4: Add request refund");
-					System.out.println("5: Pay with special service");
+					System.out.println("3: Add request refund");
+					System.out.println("4: Pay with special service");
 					System.out.print("Select: ");
 					int select = scan.nextInt();
 					scan.nextLine();
@@ -93,24 +92,22 @@ public class PaymentSystem {
 						user.search(s);
 						
 					}else if(select==2) {
-						Wallet w = new Wallet();
-						System.out.print("The amount in Wallet: "+w.showWallet(user));
+						
+						System.out.print("The amount in Wallet: "+user.wallet.showWallet(user));
 					}else if(select==3) {
-						CreditCard c  = new CreditCard();
-						System.out.print("The amount in credit Card: "+c.ShowCreditCard(user));
-					}else if(select==4) {
 						System.out.print("Enter Service Name: ");
 						String serviceName = scan.nextLine();
 						System.out.print("Enter amount: ");
 						Double amount = scan.nextDouble();
 						scan.nextLine();
 						user.RequestRefund(serviceName, amount);
-					}else if(select==5) {
+					}else if(select==4) {
 						System.out.println("Enter Service Number: ");
-						System.out.println("1-Mobile recharge services.\n"
-								+ "2-Internet Payment services.\n"
-								+ "3-Landline services \n"
-								+" 4-Donations");
+						System.out.println("1-Mobile recharge services.");
+						System.out.println("2-Internet Payment services.");
+						System.out.println("3-Landline services ");
+						System.out.println("4-Donations");
+						System.out.print("Select: ");
 						int n=scan.nextInt();
 						user.pay(n);
 						

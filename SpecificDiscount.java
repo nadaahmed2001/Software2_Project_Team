@@ -6,7 +6,7 @@ public class SpecificDiscount implements Discount {
 	public double addDiscount( double discount ) {
 		
 		return 0;}
-	}
+	
 //		System.out.println("Choose Service to add discount:");
 //		System.out.println("1-MobileRechargement Service \n 2-InternetPayment Service"
 //				+ " \n 3-LAndlines Service \n 4-Donations Service");

@@ -7,19 +7,22 @@ public class InternetPaymentService implements Service{
 	}
 	public InternetPaymentService() {}
 	
-	public InternetPaymentService(String type , String mobile , double amount) {
-		if (type.equals("Vodafone"))
-			provider = new Vodafone(mobile , amount);
-		else if (type.equals("Etisalat"))
-			provider = new Etisalat(mobile , amount);
-		else if (type.equals("Orange"))
-			provider = new Orange(mobile , amount);
-		else if (type.equals("We"))
-			provider = new We(mobile , amount);
+	public InternetPaymentService(String type ) {
+		if (type.equals("Vodafone")) 
+			provider = new Vodafone();
+		
+		else if (type.equals("Etisalat")) 
+			provider = new Etisalat();
+		
+    	else if (type.equals("Orange")) 
+			provider = new Orange();
+		
+	    else if (type.equals("We")) 
+			provider = new We();
 	
 	}
 	public double GetTotalFees() {
-		return provider.totalFees();
+		return provider.templete();
 	}
 
 }
