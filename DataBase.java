@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class DataBase {
 	public static int counter = 0;
-	public static String userInfo[][] = new String[50][4];
+	public static String userInfo[][] = new String[50][5];
 	public static String AdminInfo[][] = new String[20][2];
 	static ArrayList<Refund> AllRefundRequests = new ArrayList<Refund>();
 	static int noOfRefunds = 0;
@@ -32,6 +32,7 @@ public class DataBase {
 	// check user email and password[login]
 	public static boolean CheckUserInfo(String Email, String pass) {
 		if (counter == 0)
+			
 			return false;
 		for (int i = 0; i < 50; i++) {
 			if (userInfo[i][0].equals(Email) )
@@ -43,11 +44,13 @@ public class DataBase {
 	// check user info and check if it is already exit[sign up]
 	public static boolean AddUserInfo(String Email, String pass) {
 		if (counter == 0) {
+			
 			for (int i = 0; i < 50; i++) {
 				userInfo[i][0] = "";
 				userInfo[i][1] = "";
 				userInfo[i][2] = "1500";
 				userInfo[i][3] = "2000";
+				userInfo[i][4] = "2";
 			}
 		}
 		if (!CheckUserInfo(Email, pass)) {

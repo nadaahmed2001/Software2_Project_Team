@@ -1,3 +1,12 @@
+/*
+ * Team members:        IDs:
+ * * * * * * * *       * * * *
+ * 1- Hadeer Adel          20201210
+ * 2- Yasmine Ahmed        20200632
+ * 3- Nada Ahmed           20190578
+ * 4- Eman Ramadan         20200104
+ */
+
 import java.util.Scanner;
 
 public class PaymentSystem {
@@ -8,6 +17,7 @@ public class PaymentSystem {
 
 		User user = new User();
 		Admin admin = new Admin();
+		boolean flag = false;
 		char AorU = '0';// to know user or admin 2:Admin 1:user
 		boolean registerAccepted = false;// to know if registered correctly
 		Scanner scan = new Scanner(System.in);
@@ -46,6 +56,7 @@ public class PaymentSystem {
 				String Email = scan.nextLine();
 				System.out.print("Enter Password: ");
 				String pass = scan.nextLine();
+				
 
 				registerAccepted = user.signUp(Email, pass, userName);
 
@@ -54,7 +65,7 @@ public class PaymentSystem {
 			if (registerAccepted) {
 				if (AorU == '2') {// admin functionality
 					
-					System.out.println("\n1: Add Discount");
+					System.out.println("1: Add Discount");
 					System.out.println("2: Show List of Requests Refunds");
 					System.out.println("3: Edit List of Requests Refunds");
 					System.out.print("Select: ");
@@ -73,17 +84,22 @@ public class PaymentSystem {
 						String emailRefund=scan.nextLine();
 						System.out.print("Enter status of this refund 0:rejected | 1:Accepted: ");
 						int state=scan.nextInt();
+						
 						boolean stateRefund;
 						if(state==0)
 							stateRefund = false;
+							
 						else
 							stateRefund = true;
+						
 						scan.nextLine();
 						admin.AcceptOrReject(emailRefund, stateRefund);
+						admin.setAvailiabilty(stateRefund);
 					}
 					
+					
 				} else if(AorU =='1'){// user functionality
-					System.out.println("\n1: Search Service");
+					System.out.println("1: Search Service");
 					System.out.println("2: Show Wallet");
 					System.out.println("3: Add request refund");
 					System.out.println("4: Pay with special service");
@@ -99,13 +115,21 @@ public class PaymentSystem {
 					}else if(select==2) {
 						
 						System.out.print("The amount in Wallet: "+user.wallet.showWallet(user));
+						
 					}else if(select==3) {
-						System.out.print("Enter Service Name: ");
-						String serviceName = scan.nextLine();
-						System.out.print("Enter amount: ");
-						Double amount = scan.nextDouble();
-						scan.nextLine();
-						user.RequestRefund(serviceName, amount);
+						if(flag == true) {
+						
+							System.out.print("Enter Service Name: ");
+							String serviceName = scan.nextLine();
+							System.out.print("Enter amount: ");
+							Double amount = scan.nextDouble();
+							scan.nextLine();
+							user.RequestRefund(serviceName, amount);
+							admin.RegistRequest(user);
+						}else {
+							System.out.println();
+							System.out.println("You have not paid for any service yet to request refund!😒 \n");
+						}
 					}else if(select==4) {
 					
 						System.out.println("Enter Service Number: ");
@@ -116,6 +140,7 @@ public class PaymentSystem {
 						System.out.print("Select: ");
 						int n=scan.nextInt();
 						user.pay(n);
+						flag = true;
 						
 					}else {
 						

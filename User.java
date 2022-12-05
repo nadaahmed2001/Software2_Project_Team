@@ -1,7 +1,7 @@
 
 import java.util.Scanner;
 
-public class User {
+public class User implements observer {
 	String password;
 	String email;
 	String username;
@@ -14,9 +14,23 @@ public class User {
 		if (DataBase.CheckUserInfo(email, pass)) {
 			this.email = email;
 			this.password = pass;
-			System.out.println("Login Successfully");
+			System.out.println();
+			System.out.println("Login Successfully\n");
+			for(int i=0;i<50;i++) {
+				if (DataBase.userInfo[i][0].equals(this.email)) {
+					if(DataBase.userInfo[i][4] =="0") {
+						System.out.println(this.username +" Has new notification: Request Rejected.\n");
+						
+					}else if(DataBase.userInfo[i][4] =="1"){
+						
+						System.out.println(this.username +" Has new notification: "
+								+ "Request Accepted, and the transaction done successfully!😀\n");
+					}
+				}
+			}
 			return true;
 		} else 
+			System.out.println();
 			System.out.println("Email or Password is incorrect");
 		    return false;
 	}
@@ -26,6 +40,7 @@ public class User {
 			this.email = email;
 			this.password = pass;
 			this.username = username;
+			System.out.println();
 			System.out.println("SignUp Successfully");
 			return true;
 		} else
@@ -83,8 +98,8 @@ public class User {
 		
 		case 1:// mobile recharge
 			MobileRechargeService v = MobileRechargeService.GetInstance();
-			scan.nextLine();
-			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Mobinil \n 4-We");
+			
+			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Orange \n 4-We");
 			System.out.print("Select: ");
 			// Take input specificServiceNumber from user
 			
@@ -123,8 +138,8 @@ public class User {
 		case 2: // internet Payment services
 			
 			InternetPaymentService v2 = InternetPaymentService.GetInstance();
-			scan.nextLine();
-			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Mobinil \n 4-We");
+		
+			System.out.println("Choose:\n 1-Vodafone \n 2-Etisalat \n 3-Orange \n 4-We");
 			System.out.print("Select: ");
 			
 			// Take input specificServiceNumber from user
@@ -164,7 +179,7 @@ public class User {
 		case 3: // Landline Service
 			
 			LandlinesService v3 = LandlinesService.GetInstance();
-			scan.nextLine();
+		
 			System.out.println("Choose:\n 1-Monthly Receipt \n 2-Quarter Receipt \n ");
 			System.out.print("Select: ");
 			
@@ -199,7 +214,7 @@ public class User {
 		case 4: // Donations
 			
 			DonationsService v4 = DonationsService.GetInstance();
-			scan.nextLine();
+			
 			System.out.println("Choose:\n 1-NGOs \n 2-School \n 3-Canser Hospital \n ");
 			System.out.print("Select: ");
 			
@@ -244,7 +259,7 @@ public class User {
 		
 		String option = "";
 		// Take option input from user
-		scan.nextLine();
+		
 		System.out.println("Choose the payment method: 1-Credit card   2-Wallet");
 		
 		option = scan.nextLine();
@@ -284,6 +299,11 @@ public class User {
 	
 
 	public void RequestRefund(String serviceName, double amount) {
+		for(int i=0;i<50;i++) {
+			if (DataBase.userInfo[i][0].equals(this.email)) {
+				DataBase.userInfo[i][4] = "3";
+			}
+		}
 		this.refund = new Refund();
 		this.refund.user = new User();
 		this.refund.serviceName = serviceName;
@@ -305,6 +325,29 @@ public class User {
 		}else {
 			System.out.println("There is "+Admin.type);
 		}
+		
+	}
+
+	
+	public void update(boolean message) {
+		if(message == false) {
+			for(int i=0;i<50;i++) {
+				if (DataBase.userInfo[i][0].equals(this.email)) {
+					DataBase.userInfo[i][4] ="0";
+				}
+			}
+			
+			
+		}else {
+			for(int i=0;i<50;i++) {
+				if (DataBase.userInfo[i][0].equals(this.email)) {
+					DataBase.userInfo[i][4] ="1";
+				}
+			}
+
+			
+		}
+		
 		
 	}
 	

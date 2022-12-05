@@ -1,7 +1,8 @@
-//import java.util.ArrayList; // import the ArrayList class
+import java.util.ArrayList; // import the ArrayList class
+import java.util.List;
 import java.util.Scanner;
 
-public class Admin {
+public class Admin implements Subject{
 	
 	String email;
 	String password;
@@ -9,7 +10,12 @@ public class Admin {
 	Service service;
 	public static boolean flag = false;
 	public static String type = "";
+	boolean availability;
+	private ArrayList observers ;
 	
+	public Admin() {
+		observers = new ArrayList(); 
+	}
 
 	public Boolean login(String email, String pass) {
 		if (DataBase.CheckAdminInfo(email, pass)) {
@@ -145,7 +151,8 @@ public class Admin {
 					DataBase.AllRefundRequests.get(i).user.wallet=new Wallet();
 					for (int j = 0; j < 50; j++) {
 						if (DataBase.userInfo[j][0].equals(DataBase.AllRefundRequests.get(i).user.email)) {
-							DataBase.userInfo[j][2]=String.valueOf(DataBase.AllRefundRequests.get(i).amount + Double.valueOf(DataBase.userInfo[j][2]));
+							DataBase.userInfo[j][2]=String.valueOf(DataBase.AllRefundRequests.get(i).amount 
+									+ Double.valueOf(DataBase.userInfo[j][2]));
 						}
 	
 					}
@@ -157,4 +164,40 @@ public class Admin {
 		}
 	}
 	
+	public void notifyObservers() {
+		for (int i = 0; i < observers.size(); i++) {
+			observer observer = (observer)observers.get(i);
+			observer.update(availability);
+		}
+			 
+		
+	}
+
+
+	
+	public void RegistRequest(observer o) {
+		
+		observers.add(o);
+	}
+
+	
+	public void RemoveRequest(observer o) {
+		int i = observers.indexOf(o);
+		if (i >= 0) {
+		observers.remove(i);
+		}
+		
+	}
+	public void AvailiabiltyChanged() {
+		 
+		notifyObservers();
+		 
+		}
+		 
+		public void setAvailiabilty(boolean message) {
+			
+		 this.availability = message;
+		 AvailiabiltyChanged();
+		 
+		}
 }
