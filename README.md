@@ -1,7 +1,7 @@
 # Software2_Project_Team
 This is our project for Software Engineering 2 
-<br>Phase1 code is in master branch
-<b>And Phase2 Code is in Phase2 branch
+<br><b>Phase1<b> code is in master branch
+<br>And <b>Phase2<b> Code is in Phase2 branch
 # Our ID's:
 20190578
 <br>20200632
