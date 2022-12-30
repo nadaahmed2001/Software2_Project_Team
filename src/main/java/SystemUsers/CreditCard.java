@@ -1,5 +1,4 @@
-package SystemUsers;
-
+package com.softwarePhase2.se.softwarePhase2.SystemUsers;
 
 public class CreditCard {
 	double amount = 2000;

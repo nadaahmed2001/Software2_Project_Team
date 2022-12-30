@@ -1,8 +1,19 @@
-package SystemUsers;
+package com.softwarePhase2.se.softwarePhase2.SystemUsers;
+import org.springframework.web.bind.annotation.*;
+import  com.softwarePhase2.se.softwarePhase2.Services.*;
 
-import Services.*;
+
+
 import java.util.Scanner;
 
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
 public class User implements observer {
 	String password;
 	String email;
@@ -12,45 +23,60 @@ public class User implements observer {
 	Refund refund ;
 	Scanner scan = new Scanner(System.in);
 	// Login
-	public boolean login(String email, String pass) {
-		if (DataBase.CheckUserInfo(email, pass)) {
-			this.email = email;
-			this.password = pass;
+	public void setEmail(String Email) {
+		this.email=Email;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setPassword(String pass) {
+		this.password=pass;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setUsername(String name) {
+		this.username=name;
+	}
+		
+	public String getUsername() {
+		return username;
+	}
+	@GetMapping(value="/users/{email}/{password}")
+	public String login(@PathVariable("email") String email,@PathVariable("password") String password) {
+		if (DataBase.CheckUserInfo(email,password)) {
+			this.email = getEmail();
 			System.out.println();
-			System.out.println("Login Successfully\n");
 			for(int i=0;i<50;i++) {
-				if (DataBase.userInfo[i][0].equals(this.email)) {
+				if (DataBase.userInfo[i][0].equals(getEmail())) {
 					if(DataBase.userInfo[i][4] =="0") {
-						System.out.println(this.username +" Has new notification: Request Rejected.\n");
+						return "Login Successfully\n"+ getUsername() +" Has new notification: Request Rejected.\n";
 						
 					}else if(DataBase.userInfo[i][4] =="1"){
 						
-						System.out.println(this.username +" Has new notification: "
-								+ "Request Accepted, and the transaction done successfully!😀\n");
+						return "Login Successfully\n"+ getUsername() +" Has new notification: "
+								+ "Request Accepted, and the transaction done successfully!😀\n";
 					}
 				}
 			}
-			return true;
+			return "Login Successfully\n";
 		} else 
 			System.out.println();
-			System.out.println("Email or Password is incorrect");
-		    return false;
+		    return "Email or Password is incorrect";
 	}
-
-	public boolean signUp(String email, String pass, String username) {
-		if (DataBase.AddUserInfo(email, pass)) {
-			this.email = email;
-			this.password = pass;
-			this.username = username;
-			System.out.println();
-			System.out.println("SignUp Successfully");
-			return true;
+	@PostMapping(value="/users")
+	public String signUp(@RequestBody User user) {
+		if (DataBase.AddUserInfo(user.getEmail(),user.getPassword())) {
+			this.email = user.getEmail();
+			this.password = user.getPassword();
+			this.username = user.getUsername();
+			return "SignUp Successfully";
 		} else
-			System.out.println("Email is already Exists");
-		return false;
+			return "Email is already Exists";
 	}
-
-	public void search(String serviceName) {
+	
+	@GetMapping(value="/Services/{serviceName}")
+	public String search(@PathVariable("serviceName") String serviceName) {
 		String[] servicesList= {"Mobile recharge services","Internet Payment services","Landline services","Donations"};
 		String[] Result= new String[10];
 		for(int i=0;i<servicesList.length;i++) {
@@ -62,31 +88,23 @@ public class User implements observer {
 			if(Result[i]!=null) {
 				System.out.println((i+1)+" "+Result[i]);
 				if(Result[i].equalsIgnoreCase("Mobile recharge services")) {
-					System.out.println(" a.	Vodafone");
-					System.out.println(" b.	Etisalat");
-					System.out.println(" c.	Orange");
-					System.out.println(" d.	We");
+					return " a.Vodafone\n b.Etisalat\n c.Orange\n d.We\n";
 					
 				}
 				else if(Result[i].equalsIgnoreCase("Internet Payment services")) {
-					System.out.println(" a.	Vodafone");
-					System.out.println(" b.	Etisalat");
-					System.out.println(" c.	Orange");
-					System.out.println(" d.	We");
+					return " a.Vodafone\n b.Etisalat\n c.Orange\n d.We\n";
 					
 				}
 				else if(Result[i].equalsIgnoreCase("Landline services")) {
-					System.out.println(" a.	Monthly receipt");
-					System.out.println(" b.	Quarter receipt");	
+					return " a.	Monthly receipt\n b.Quarter receipt\n";	
 				}
 				else if(Result[i].equalsIgnoreCase("Donations")) {
-					System.out.println(" a.	Cancer Hospital");
-					System.out.println(" b.	Schools");
-					System.out.println(" c.	NGOs (Non profitable organizations)");
+					return " a.	Cancer Hospital\n b.Schools \nc.NGOs (Non profitable organizations)\n";
 					
 					
 				}
 		}}
+		return "Not Found";
 
 	}
 
@@ -299,19 +317,20 @@ public class User implements observer {
 	
 		}
 	
-
-	public void RequestRefund(String serviceName, double amount) {
+	@PostMapping(value="/Refunds")
+	public String RequestRefund(@RequestBody Refund obj) {
 		for(int i=0;i<50;i++) {
-			if (DataBase.userInfo[i][0].equals(this.email)) {
+			if (DataBase.userInfo[i][0].equals(obj.getUser().getEmail())) {
 				DataBase.userInfo[i][4] = "3";
 			}
 		}
 		this.refund = new Refund();
-		this.refund.user = new User();
-		this.refund.serviceName = serviceName;
-		this.refund.amount = amount;
-		this.refund.user.email = email;
-		this.refund.addRefundToArrayList(refund);
+		this.refund.setUser(obj.getUser());
+		this.refund.setServiceName(obj.serviceName);
+		this.refund.setAmount(obj.getAmount());
+		this.refund.setState(obj.getState());
+		//this.refund.getUser().email = email;
+		return this.refund.addRefundToArrayList(refund);
 	}
 
 	public void AddToWallet(double amount) {
@@ -320,7 +339,7 @@ public class User implements observer {
 		// If success, Add amount to wallet
 		wallet.amount += amount;
 	}
-
+	
 	public void CheckDiscount() {
 		if(Admin.flag == false) {
 			System.out.println("There is no Discount rightnow..");

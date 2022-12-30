@@ -1,5 +1,4 @@
-package SystemUsers;
-
+package com.softwarePhase2.se.softwarePhase2.SystemUsers;
 
 public class Wallet {
 public double amount = 1500;

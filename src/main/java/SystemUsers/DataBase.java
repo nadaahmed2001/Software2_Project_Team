@@ -1,4 +1,4 @@
-package SystemUsers;
+package com.softwarePhase2.se.softwarePhase2.SystemUsers;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ public class DataBase {
 	public static int counter = 0;
 	public static String userInfo[][] = new String[50][5];
 	public static String AdminInfo[][] = new String[20][2];
-	static ArrayList<Refund> AllRefundRequests = new ArrayList<Refund>();
+	public static ArrayList<Refund> AllRefundRequests = new ArrayList<Refund>();
 	static int noOfRefunds = 0;
 	//static ArrayList<Provider> Providers = new ArrayList<Provider>();//Array of objects that holds all service providers
 
@@ -32,13 +32,14 @@ public class DataBase {
 	}
 
 	// check user email and password[login]
-	public static boolean CheckUserInfo(String Email, String pass) {
+	public static boolean CheckUserInfo(String Email,String pass) {
 		if (counter == 0)
 			
 			return false;
 		for (int i = 0; i < 50; i++) {
-			if (userInfo[i][0].equals(Email) )
-				return true;
+			if (userInfo[i][0].equals(Email))
+				if (userInfo[i][1].equals(pass))
+					return true;
 		}
 		return false;
 	}
@@ -55,7 +56,7 @@ public class DataBase {
 				userInfo[i][4] = "2";
 			}
 		}
-		if (!CheckUserInfo(Email, pass)) {
+		if (!CheckUserInfo(Email,pass)) {
 			userInfo[counter][0] = Email;
 			userInfo[counter][1] = pass;
 			counter++;
