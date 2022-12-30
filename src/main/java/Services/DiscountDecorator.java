@@ -1,5 +1,4 @@
-package Services;
-
+package com.softwarePhase2.se.softwarePhase2.Services;
 
 public class DiscountDecorator implements Service {
 
@@ -9,8 +8,8 @@ public class DiscountDecorator implements Service {
 //	        this.s = service;
 //	    }
 	
-	public void AddDiscount(double discount) {
-		s.AddDiscount(discount);
+	public String AddDiscount(String discount) {
+		return s.AddDiscount(discount);
 		   
 	}
 	public double GetTotalFees() {

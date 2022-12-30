@@ -1,4 +1,5 @@
-package Services;
+package com.softwarePhase2.se.softwarePhase2.Services;
+
 
 public class SpecificDiscount extends DiscountDecorator{
 	
@@ -9,9 +10,9 @@ public class SpecificDiscount extends DiscountDecorator{
     }
 	
 
-	public void AddDiscount(double discount) {
+	public String AddDiscount(String discount) {
 		 
-		service.AddDiscount(discount);
+		return service.AddDiscount(discount);
 		
 	}
 	public double GetTotalFees() {

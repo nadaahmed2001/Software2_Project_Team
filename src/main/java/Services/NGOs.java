@@ -1,4 +1,5 @@
-package Services;
+package com.softwarePhase2.se.softwarePhase2.Services;
+
 
 
 public class NGOs implements DonationFactory{

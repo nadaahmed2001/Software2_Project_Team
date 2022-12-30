@@ -1,4 +1,13 @@
-package Services;
+package com.softwarePhase2.se.softwarePhase2.Services;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList; 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@RestController
 
 public class DonationsService implements Service{
 	public DonationFactory obj;
@@ -33,10 +42,11 @@ public class DonationsService implements Service{
 		return obj.totalFees() + instance.fees;
 	}
 
-	public void AddDiscount(double discount) {
-		instance.fees-=discount;
-		System.out.println("Donations Service after discount is: " + instance.fees + "\n");
+	@PostMapping(value="/AddDiscountDonation")
+	public String AddDiscount(@RequestParam String discount) {
+		GetInstance();
+		instance.fees-=Double.parseDouble(discount);
+		return "Donation Service after discount is: " + instance.fees +"\n";
 		
 	}
-	
 }
