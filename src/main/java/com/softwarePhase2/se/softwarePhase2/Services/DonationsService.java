@@ -3,7 +3,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
+//@RestController
 
 public class DonationsService implements Service{
 	public DonationFactory obj;
@@ -19,9 +19,10 @@ public class DonationsService implements Service{
 	}
 	
 	public void SetDonationFactory(String type , double amount ){
-		if(type.equals("School"))
+		type.toLowerCase();
+		if(type.equals("school"))
 			obj = new School(amount);
-		else if(type.equals("NGOs"))
+		else if(type.equals("ngos"))
 			obj = new NGOs(amount);
 		else
 			obj = new CancerHospital(amount);

@@ -3,21 +3,16 @@ import org.springframework.web.bind.annotation.*;
 import  com.softwarePhase2.se.softwarePhase2.Services.*;
 
 
-
 import java.util.Scanner;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class User implements observer {
 	String password;
 	String email;
 	String username;
+	String service="";
 	public Wallet wallet = new Wallet();
 	CreditCard credit = new CreditCard();
 	Refund refund ;
@@ -125,11 +120,13 @@ public class User implements observer {
 			
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
-
+			
+			
 			switch (specificServiceNumber) {
 			case 1: // vodafone
 				v.SetProvider("Vodafone");
 				TotalFees = v.GetTotalFees();
+				this.service = "vodafone MobileRecharge Service";
 			
 			
 			break;
@@ -137,18 +134,21 @@ public class User implements observer {
 			case 2:
 				v.SetProvider("Etisalat");
 				TotalFees = v.GetTotalFees();
+				this.service = "Etisalat MobileRecharge Service";
 		
 				
 			break;
 			case 3:
 				v.SetProvider("Orange");
 				TotalFees = v.GetTotalFees();
+				this.service = "Orange MobileRecharge Service";
 
 				
 			break;
 			case 4:
 				v.SetProvider("We");
 				TotalFees = v.GetTotalFees();
+				this.service = "We MobileRecharge Service";
 				
 				
 			}	
@@ -166,22 +166,26 @@ public class User implements observer {
 			specificServiceNumber=scan.nextInt();
 			scan.nextLine();
 			
+			
 			switch (specificServiceNumber) {
 			case 1: // vodafone
 				v2.SetProvider("Vodafone");
 				TotalFees = v2.GetTotalFees();
+				this.service  = "Vodafone InternetPayment Service";
 		
 			break;
 			
 			case 2:
 				v2.SetProvider("Etisalat");
 				TotalFees = v2.GetTotalFees();
+				this.service  = "Etisalat InternetPayment Service";
 				
 				
 			break;
 			case 3:
 				v2.SetProvider("Orange");
 				TotalFees = v2.GetTotalFees();
+				this.service  = "Orange InternetPayment Service";
 				
 				
 			break;
@@ -189,6 +193,7 @@ public class User implements observer {
 				
 				v2.SetProvider("We");
 				TotalFees = v2.GetTotalFees();
+				this.service  = "We InternetPayment Service";
 			
 			break;
 			}
@@ -215,6 +220,7 @@ public class User implements observer {
 				case 1: //Monthly Receipt
 					v3.SetLandlinesFactory("Monthly Receipt" , amount);
 					TotalFees = v3.GetTotalFees();
+					this.service  = "Monthly Receipt Landlines Service";
 					
 
 				break;
@@ -223,7 +229,7 @@ public class User implements observer {
 					
 					v3.SetLandlinesFactory("Quarter Receipt" , amount);
 					TotalFees = v3.GetTotalFees();
-
+					this.service  = "Quarter Receipt Landlines Service";
 					
 				break;
 		
@@ -251,6 +257,7 @@ public class User implements observer {
 					
 					v4.SetDonationFactory("NGOs" , amount);
 					TotalFees = v4.GetTotalFees();
+					this.service  = "NGOs Donations Service";
 					
 			
 				break;
@@ -259,6 +266,7 @@ public class User implements observer {
 					
 					v4.SetDonationFactory("School" , amount);
 					TotalFees = v4.GetTotalFees();
+					this.service  = "School Donations Service";
 					
 					
 				break;
@@ -266,6 +274,7 @@ public class User implements observer {
 				case 3:
 					v4.SetDonationFactory("CancerHospital" , amount);
 					TotalFees = v4.GetTotalFees();
+					this.service  = "Canser Hospital Donations Service";
 
 					
 				break;
@@ -313,9 +322,59 @@ public class User implements observer {
 		break;
 			
 		}
-		
+		DataBase.PayTransaction[DataBase.paycount][0] = this.email;
+		DataBase.PayTransaction[DataBase.paycount][1] = this.service;
+		DataBase.PayTransaction[DataBase.paycount][2] = Double.toString(TotalFees);  
+		DataBase.paycount++ ;
 	
 		}
+	
+	@GetMapping(value="/PAY/{serviceName}/{provider}/{mobile}/{amount}")//this function to use in web server , it does the same job of function pay above(function pay used in console app only as it take alot of inputs)
+	public String PAY(@PathVariable("serviceName")String serviceName ,@PathVariable("provider") String provider ,@PathVariable("mobile")  String mobile ,@PathVariable("amount") double amount) {
+		double TotalFees =0;
+		serviceName.toLowerCase();
+		provider.toLowerCase();
+		
+		if(serviceName.equals("mobilerecharge")  || serviceName.equals("mobile recharge")) {
+			MobileRechargeService v = MobileRechargeService.GetInstance();
+			v.SetProvider(provider);
+			TotalFees = v.TOTALFEES(amount);
+			this.service = provider +  " MobileRecharge Service";
+			
+		}else if(serviceName.equals("internetpayment")  || serviceName.equals("internet payment")) {
+				InternetPaymentService v2 = InternetPaymentService.GetInstance();
+				v2.SetProvider(provider);
+				TotalFees = v2.TOTALFEES(amount);
+				this.service  = provider + " InternetPayment Service";
+				
+		}else if(serviceName.equals("landlines")) {
+			LandlinesService v3 = LandlinesService.GetInstance();
+			v3.SetLandlinesFactory(provider, amount );
+			TotalFees = v3.GetTotalFees();
+			this.service  =  provider +" Receipt Landlines Service";
+		}else if(serviceName.equals("donations")){
+			DonationsService v4 = DonationsService.GetInstance();
+			v4.SetDonationFactory(provider , amount);
+			TotalFees = v4.GetTotalFees();
+			this.service  = provider +" Donations Service";
+		}else {
+			return "Enter valid service.";
+		}
+			
+		if (this.wallet.amount >= TotalFees ) {
+			this.wallet.TakeFromWallet(this, TotalFees); 
+			DataBase.PayTransaction[DataBase.paycount][0] = this.email;
+			DataBase.PayTransaction[DataBase.paycount][1] = this.service;
+			DataBase.PayTransaction[DataBase.paycount][2] = Double.toString(TotalFees);  
+			DataBase.paycount++ ;
+		return "TotalFees is = " + TotalFees;
+		}
+		else {
+			return "There is not enough money in your wallet!";
+		}
+	
+
+	}
 	
 	@PostMapping(value="/Refunds")
 	public String RequestRefund(@RequestBody Refund obj) {
@@ -333,12 +392,7 @@ public class User implements observer {
 		return this.refund.addRefundToArrayList(refund);
 	}
 
-	public void AddToWallet(double amount) {
-		// Get money from credit card
 
-		// If success, Add amount to wallet
-		wallet.amount += amount;
-	}
 	@PostMapping(value="/showDiscounts")
 	public String CheckDiscount(@RequestBody DiscountDecorator discounts) {
 		if(discounts.getDiscounts() == "") {
@@ -347,7 +401,14 @@ public class User implements observer {
 			return "There is "+discounts.getDiscounts();
 		}
 	}
-
+	@GetMapping(value="/userWallet")
+	public String showWallet(@RequestBody User user) {
+		return this.wallet.showWallet(this);
+	}
+	@PutMapping(value="/userWallet/{Amount}")
+	public String AddTOWallet( @RequestBody User user, @PathVariable ("Amount") double Amount) {
+		return this.wallet.AddtoWallet(this, Amount);
+	}
 	
 	public void update(boolean message) {
 		if(message == false) {

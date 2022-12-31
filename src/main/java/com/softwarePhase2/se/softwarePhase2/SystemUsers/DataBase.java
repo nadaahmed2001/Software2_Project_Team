@@ -2,13 +2,17 @@ package com.softwarePhase2.se.softwarePhase2.SystemUsers;
 
 import java.util.ArrayList;
 
+
 public class DataBase {
 	public static int counter = 0;
+	static int noOfRefunds = 0;
+	public static int paycount= 0;
 	public static String userInfo[][] = new String[50][5];
 	public static String AdminInfo[][] = new String[20][2];
+	public static String PayTransaction[][] =  new String[50][3];
+	public static String WalletTransaction[][] =  new String[50][2];	
+	public static ArrayList<Refund> RefundRequestTransaction = new ArrayList<Refund>();
 	public static ArrayList<Refund> AllRefundRequests = new ArrayList<Refund>();
-	static int noOfRefunds = 0;
-	//static ArrayList<Provider> Providers = new ArrayList<Provider>();//Array of objects that holds all service providers
 
 	// check admin email and password[login]
 	public static boolean CheckAdminInfo(String Email, String pass) {

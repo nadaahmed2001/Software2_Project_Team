@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
+//@RestController
 public class LandlinesService implements Service{
 	LandlinesFactory obj;
 	public  double fees;
@@ -24,7 +24,7 @@ public class LandlinesService implements Service{
 	}
 	
 	public void SetLandlinesFactory(String type , double amount) {
-		if(type.equals("Monthly Receipt"))
+		if(type.equals("monthly"))
 			obj = new MonthlyReceipt(amount );
 		else
 			obj = new QuarterReceipt(amount);

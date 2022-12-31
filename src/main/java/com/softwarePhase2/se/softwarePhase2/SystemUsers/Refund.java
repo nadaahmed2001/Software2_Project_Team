@@ -1,5 +1,6 @@
 package com.softwarePhase2.se.softwarePhase2.SystemUsers;
 
+
 public class Refund {
 	public String serviceName ;
 	public User user ;//The user who requests this refund
@@ -10,6 +11,7 @@ public class Refund {
 	public String addRefundToArrayList( Refund r){
 		//r.setState("Suspended");
 		DataBase.AllRefundRequests.add(r);
+		DataBase.RefundRequestTransaction.add(r);
 		DataBase.noOfRefunds++;
 		return "Refund Request Added Sucessfully";
 	}

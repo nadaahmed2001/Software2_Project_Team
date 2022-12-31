@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
+//@RestController
 
 public class InternetPaymentService implements Service{
 	
@@ -24,16 +24,17 @@ public class InternetPaymentService implements Service{
 				this.fees =  fees;
 			}
 			
-			public void SetProvider(String type) {
-				if (type.equals("Vodafone")) 
+			public void SetProvider(String type ) {
+				type.toLowerCase();
+				if (type.equals("vodafone")) 
 					provider = new Vodafone();
-				else if (type.equals("Etisalat")) 
+				else if (type.equals("etisalat")) 
 					provider = new Etisalat();
 				
-		    	else if (type.equals("Orange")) 
+		    	else if (type.equals("orange")) 
 					provider = new Orange();
 				
-			    else if (type.equals("We")) 
+			    else if (type.equals("we")) 
 					provider = new We();
 			}
 			
@@ -46,6 +47,9 @@ public class InternetPaymentService implements Service{
 			
 			public double GetTotalFees() {
 				return provider.templete() + instance.fees;
+			}
+			public double TOTALFEES(double Amount) {//this function to use in webs server
+				return instance.fees  + provider.totalFees(Amount);
 			}
 
 			@PostMapping(value="/AddDiscount/InternetPayment")

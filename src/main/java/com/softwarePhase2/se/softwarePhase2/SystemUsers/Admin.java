@@ -1,6 +1,8 @@
 package com.softwarePhase2.se.softwarePhase2.SystemUsers;
 
 import  com.softwarePhase2.se.softwarePhase2.Services.*;
+
+
 import java.util.Scanner;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList; 
@@ -48,8 +50,6 @@ public class Admin implements Subject{
 		
 	}
 
-	void AddServiceProvider(Provider provider) {
-	}
 
 	@PostMapping(value="/AddDiscount")
 	public void AddDiscount(@RequestBody String discount) {
@@ -67,20 +67,14 @@ public class Admin implements Subject{
 			service =  MobileRechargeService.GetInstance();
 			service = new OverallDiscount(service );
 			service.AddDiscount(d);
-		
-			
-			
 			
 			service =  InternetPaymentService.GetInstance();
 			service = new OverallDiscount( service);
 			service.AddDiscount(d);
 		
-			
 			service =  LandlinesService.GetInstance();
 			service = new OverallDiscount( service);
 			service.AddDiscount(d);
-	
-			
 			
 			service =  DonationsService.GetInstance();
 			service = new OverallDiscount( service);
@@ -90,8 +84,6 @@ public class Admin implements Subject{
 			discounts.setDiscounts(discounts.getDiscounts()+ "Overall Discount on MobileRecharge Service, InternetPayment Service, "
 					+ "Landlines Service, DonationsService");
 		
-	
-			
 			
 		break;
 		
@@ -171,6 +163,7 @@ public class Admin implements Subject{
 		for(int i=0;i<DataBase.noOfRefunds;i++) {
 			if(email.equals(DataBase.AllRefundRequests.get(i).getUser().getEmail()) &&(DataBase.AllRefundRequests.get(i).serviceName.equals(serviceName))) {
 				if(state=="accepted") {
+					DataBase.RefundRequestTransaction.get(i).state = "Accepted";
 					DataBase.AllRefundRequests.get(i).getUser().wallet=new Wallet();
 					for (int j = 0; j < 50; j++) {
 						if (DataBase.userInfo[j][0].equals(DataBase.AllRefundRequests.get(i).getUser().getEmail())) {
@@ -181,6 +174,7 @@ public class Admin implements Subject{
 					}
 					DataBase.AllRefundRequests.get(i).getUser().wallet.amount+=DataBase.AllRefundRequests.get(i).getAmount();
 				}
+				DataBase.RefundRequestTransaction.get(i).state = "Rejected";
 				DataBase.AllRefundRequests.remove(i);
 				DataBase.noOfRefunds--;
 			}
@@ -195,7 +189,73 @@ public class Admin implements Subject{
 			 
 		
 	}
-
+	@GetMapping(value="/userTransactions")
+	public String ListAllUserTransaction() {
+			int flag = 0;
+			String returnvalue="";
+			
+			returnvalue+="\nList all user transaction: ";
+			returnvalue+="\n-------------------------------";
+			for(int i=0 ; i<50; i++ ) {
+				for(int j=0 ; j<50; j++) {
+				if (DataBase.userInfo!=null) {
+					if (DataBase.userInfo[i][0].equals(DataBase.PayTransaction[j][0])){
+						if (flag == 1) {
+							   
+								returnvalue+="\nPaid for Service: "+DataBase.PayTransaction[j][1];
+								returnvalue+="\nService fees: "+DataBase.PayTransaction[j][2];
+						}else {
+								
+								returnvalue+="\nUser Email: "+DataBase.PayTransaction[j][0];
+								returnvalue+="\nPaid for Service: "+DataBase.PayTransaction[j][1];
+								returnvalue+="\nService fees: " + DataBase.PayTransaction[j][2];
+								flag = 1;
+						}
+					}
+				}
+					if (DataBase.RefundRequestTransaction.size() != 0) {
+						if (j < DataBase.RefundRequestTransaction.size()) {
+							if (DataBase.userInfo[i][0].equals(DataBase.RefundRequestTransaction.get(j).user.email)){
+								if (flag == 1) {
+									
+									returnvalue+="\nRefund of Service: " + DataBase.RefundRequestTransaction.get(j).serviceName;
+									returnvalue+="\nAmount: "+DataBase.RefundRequestTransaction.get(j).amount;
+									returnvalue+="\nState: "+DataBase.RefundRequestTransaction.get(j).state;
+								}else {
+						
+									returnvalue+="\nUser Email: "+DataBase.RefundRequestTransaction.get(j).user.email;
+									returnvalue+="\nRefund of Service: "+DataBase.RefundRequestTransaction.get(j).serviceName;
+									returnvalue+="\nAmount: "+DataBase.RefundRequestTransaction.get(j).amount;
+									returnvalue+="\nState: "+DataBase.RefundRequestTransaction.get(j).state;
+									
+									flag = 1;
+							   }
+								 
+							}
+						}
+					}
+					
+					if (DataBase.userInfo[i][0].equals(DataBase.WalletTransaction[j][0])){
+						 if (flag == 1) {
+								
+								returnvalue+="\nAmount added to the wallet: "+DataBase.WalletTransaction[j][1];
+						}else {
+						
+								returnvalue+="\nUser Email: "+DataBase.WalletTransaction[j][0];
+								returnvalue+="\nAmount added to the wallet: "+DataBase.WalletTransaction[j][1];
+								flag = 1;
+						}
+						
+					}
+				}
+				flag = 0;
+			}
+			if (returnvalue.length()== 0) 
+				return "No transactions yet";
+			else
+				return returnvalue;
+		}
+	
 
 	
 	public void RegistRequest(observer o) {
