@@ -51,8 +51,8 @@ public class MobileRechargeService implements Service {
 		public double TOTALFEES(double Amount) {//this function to use in webs server
 			return instance.fees  + provider.totalFees(Amount);
 		}
-		@PostMapping(value="/AddDiscount/MobileRecharge")
-		public String AddDiscount(@RequestParam double discount) {
+		
+		public String AddDiscount( double discount) {
 			GetInstance();
 			instance.fees-=discount;
 			return "MobileRecharge after discount is: " + instance.fees +"\n";

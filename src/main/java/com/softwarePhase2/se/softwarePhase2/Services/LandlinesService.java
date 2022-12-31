@@ -41,8 +41,8 @@ public class LandlinesService implements Service{
 	public double GetTotalFees() {
 		return obj.totalFees() + instance.fees;
 	}
-	@PostMapping(value="/AddDiscount/Landlines")
-	public String AddDiscount(@RequestParam double discount) {
+	
+	public String AddDiscount( double discount) {
 		GetInstance();
 		instance.fees-=discount;
 		return "Landlines Service after discount is: " + instance.fees +"\n";

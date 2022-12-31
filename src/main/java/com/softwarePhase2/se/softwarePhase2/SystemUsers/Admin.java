@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Admin implements Subject{
@@ -19,7 +20,7 @@ public class Admin implements Subject{
 	Refund requestRefund;
 	Service service;
 	public static boolean flag = false;
-	public static DiscountDecorator discounts;
+	public static DiscountDecorator discounts = new DiscountDecorator();
 	boolean availability;
 	private ArrayList observers ;
 	
@@ -51,99 +52,81 @@ public class Admin implements Subject{
 	}
 
 
-	@PostMapping(value="/AddDiscount")
-	public void AddDiscount(@RequestBody String discount) {
-		System.out.println("Choose: 1-Overall Discout   2-Specific Discount");
-		Scanner scan = new Scanner(System.in);
-		int n = scan.nextInt();
-		double d;
-		
-		switch(n){
-		case 1:
-
-			System.out.println("Enter the Discount: ");
-			d = scan.nextDouble();
-			
+	@PostMapping(value="/AddDiscount/overall")
+	public String AddOverallDiscount(@RequestParam double discount ) {
 			service =  MobileRechargeService.GetInstance();
 			service = new OverallDiscount(service );
-			service.AddDiscount(d);
+			service.AddDiscount(discount);
 			
 			service =  InternetPaymentService.GetInstance();
 			service = new OverallDiscount( service);
-			service.AddDiscount(d);
+			service.AddDiscount(discount);
 		
 			service =  LandlinesService.GetInstance();
 			service = new OverallDiscount( service);
-			service.AddDiscount(d);
+			service.AddDiscount(discount);
 			
 			service =  DonationsService.GetInstance();
 			service = new OverallDiscount( service);
-			service.AddDiscount(d);
+			service.AddDiscount(discount);
 			
 			flag = true;
-			discounts.setDiscounts(discounts.getDiscounts()+ "Overall Discount on MobileRecharge Service, InternetPayment Service, "
-					+ "Landlines Service, DonationsService");
-		
+			discounts.setDiscounts(discount+ " Overall Discount on MobileRecharge Service, InternetPayment Service, "
+					+ "Landlines Service, DonationsService\n "+discounts.getDiscounts());
+		   return discount+" is added successfully";
 			
-		break;
-		
-		case 2:
-				System.out.println("Choose Service to add discount:");
-				System.out.println("1-MobileRechargement Service \n 2-InternetPayment Service"
-						+ " \n 3-LAndlines Service \n 4-Donations Service");
-				
-
-				int option = scan.nextInt();
-				System.out.println("Enter the Discount: ");
-				d = scan.nextDouble();
-				
+		}
+		@PostMapping(value="/AddDiscount/specificDiscounts")
+		public String AddSpecificDiscount(@RequestParam String OPTION,@RequestParam double discount ) {
+				int option = 0;
+				if(OPTION.equals("MobileRechargement"))
+					option=1;
+				else if(OPTION.equals("InternetPayment"))
+					option=2;
+				else if(OPTION.equals("Landlines"))
+					option=3;
+				else if(OPTION.equals("Donations"))
+					option=4;
 				switch(option) {
 				
 				case 1:
 					service =  MobileRechargeService.GetInstance();
 					service = new SpecificDiscount( service);
-					service.AddDiscount(d);
+					service.AddDiscount(discount);
 					flag = true;
-					discounts.setDiscounts(discounts.getDiscounts()+"Specific Discount on MobileRecharge Service");
+					discounts.setDiscounts(discount+" Specific Discount on MobileRecharge Service\n " +discounts.getDiscounts());
 
-				
 					break;
 				case 2:
 					service =  InternetPaymentService.GetInstance();
 					service = new SpecificDiscount( service);
-					service.AddDiscount(d);
+					service.AddDiscount(discount);
 					flag = true;
-					discounts.setDiscounts(discounts.getDiscounts()+"Specific Discount on InternetPayment Service");
+					discounts.setDiscounts(discount+" Specific Discount on InternetPayment Service\n "+discounts.getDiscounts());
 
 
 					break;
 				case 3:
 					service =  LandlinesService.GetInstance();
 					service = new SpecificDiscount( service);
-					service.AddDiscount(d);
+					service.AddDiscount(discount);
 					flag = true;
-					discounts.setDiscounts(discounts.getDiscounts()+"Specific Discount on Landlines Service");
+					discounts.setDiscounts(discount+" Specific Discount on Landlines Service\n "+discounts.getDiscounts());
 
-
-
-					 
 				break;
 				case 4:
 					
 					service =  DonationsService.GetInstance();
 					service = new SpecificDiscount( service);
-					service.AddDiscount(d);
+					service.AddDiscount(discount);
 					flag = true;
-					discounts.setDiscounts(discounts.getDiscounts()+"Specific Discount on Donations Service");
+					discounts.setDiscounts(discounts+" Specific Discount on Donations Service\n"+discounts.getDiscounts());
 
 					break;				
 				}
-				
-			break;
-
+				return discount+" is added successfully";
 		}
 		
-	}
 
 	@GetMapping(value="/Refunds")
 	public ArrayList<Refund> getListOfRefunds() {
@@ -197,63 +180,65 @@ public class Admin implements Subject{
 			returnvalue+="\nList all user transaction: ";
 			returnvalue+="\n-------------------------------";
 			for(int i=0 ; i<50; i++ ) {
-				for(int j=0 ; j<50; j++) {
-				if (DataBase.userInfo!=null) {
-					if (DataBase.userInfo[i][0].equals(DataBase.PayTransaction[j][0])){
-						if (flag == 1) {
-							   
-								returnvalue+="\nPaid for Service: "+DataBase.PayTransaction[j][1];
-								returnvalue+="\nService fees: "+DataBase.PayTransaction[j][2];
-						}else {
-								
-								returnvalue+="\nUser Email: "+DataBase.PayTransaction[j][0];
-								returnvalue+="\nPaid for Service: "+DataBase.PayTransaction[j][1];
-								returnvalue+="\nService fees: " + DataBase.PayTransaction[j][2];
-								flag = 1;
-						}
-					}
-				}
-					if (DataBase.RefundRequestTransaction.size() != 0) {
-						if (j < DataBase.RefundRequestTransaction.size()) {
-							if (DataBase.userInfo[i][0].equals(DataBase.RefundRequestTransaction.get(j).user.email)){
+				if (DataBase.userInfo[i][0] != null) {
+					  for(int j=0 ; j<50; j++) {
+							if (DataBase.userInfo[i][0].equals(DataBase.PayTransaction[j][0])){
 								if (flag == 1) {
-									
-									returnvalue+="\nRefund of Service: " + DataBase.RefundRequestTransaction.get(j).serviceName;
-									returnvalue+="\nAmount: "+DataBase.RefundRequestTransaction.get(j).amount;
-									returnvalue+="\nState: "+DataBase.RefundRequestTransaction.get(j).state;
+									   
+										returnvalue+="\nPaid for Service: "+DataBase.PayTransaction[j][1];
+										returnvalue+="\nService fees: "+DataBase.PayTransaction[j][2];
 								}else {
+										
+										returnvalue+="\nUser Email: "+DataBase.PayTransaction[j][0];
+										returnvalue+="\nPaid for Service: "+DataBase.PayTransaction[j][1];
+										returnvalue+="\nService fees: " + DataBase.PayTransaction[j][2];
+										flag = 1;
+								}
+							}
 						
-									returnvalue+="\nUser Email: "+DataBase.RefundRequestTransaction.get(j).user.email;
-									returnvalue+="\nRefund of Service: "+DataBase.RefundRequestTransaction.get(j).serviceName;
-									returnvalue+="\nAmount: "+DataBase.RefundRequestTransaction.get(j).amount;
-									returnvalue+="\nState: "+DataBase.RefundRequestTransaction.get(j).state;
-									
-									flag = 1;
-							   }
-								 
+						if (DataBase.RefundRequestTransaction.size() != 0) {
+							if (j < DataBase.RefundRequestTransaction.size()) {
+								if (DataBase.userInfo[i][0].equals(DataBase.RefundRequestTransaction.get(j).user.email)){
+									if (flag == 1) {
+										
+										returnvalue+="\nRefund of Service: " + DataBase.RefundRequestTransaction.get(j).serviceName;
+										returnvalue+="\nAmount: "+DataBase.RefundRequestTransaction.get(j).amount;
+										returnvalue+="\nState: "+DataBase.RefundRequestTransaction.get(j).state;
+									}else {
+							
+										returnvalue+="\nUser Email: "+DataBase.RefundRequestTransaction.get(j).user.email;
+										returnvalue+="\nRefund of Service: "+DataBase.RefundRequestTransaction.get(j).serviceName;
+										returnvalue+="\nAmount: "+DataBase.RefundRequestTransaction.get(j).amount;
+										returnvalue+="\nState: "+DataBase.RefundRequestTransaction.get(j).state;
+										
+										flag = 1;
+								   }
+									 
+								}
 							}
 						}
-					}
-					
-					if (DataBase.userInfo[i][0].equals(DataBase.WalletTransaction[j][0])){
-						 if (flag == 1) {
-								
-								returnvalue+="\nAmount added to the wallet: "+DataBase.WalletTransaction[j][1];
-						}else {
 						
-								returnvalue+="\nUser Email: "+DataBase.WalletTransaction[j][0];
-								returnvalue+="\nAmount added to the wallet: "+DataBase.WalletTransaction[j][1];
-								flag = 1;
+						if (DataBase.userInfo[i][0].equals(DataBase.WalletTransaction[j][0])){
+							 if (flag == 1) {
+									
+									returnvalue+="\nAmount added to the wallet: "+DataBase.WalletTransaction[j][1];
+							}else {
+							
+									returnvalue+="\nUser Email: "+DataBase.WalletTransaction[j][0];
+									returnvalue+="\nAmount added to the wallet: "+DataBase.WalletTransaction[j][1];
+									flag = 1;
+							}
+							
 						}
-						
 					}
+					  flag = 0;
+				
+				}else {
+					return "No transactions yet";
 				}
-				flag = 0;
 			}
-			if (returnvalue.length()== 0) 
-				return "No transactions yet";
-			else
-				return returnvalue;
+
+			return returnvalue;
 		}
 	
 

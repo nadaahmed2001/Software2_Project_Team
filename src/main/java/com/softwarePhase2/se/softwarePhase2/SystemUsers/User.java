@@ -393,21 +393,21 @@ public class User implements observer {
 	}
 
 
-	@PostMapping(value="/showDiscounts")
-	public String CheckDiscount(@RequestBody DiscountDecorator discounts) {
-		if(discounts.getDiscounts() == "") {
+	@GetMapping(value="/showDiscounts")
+	public String CheckDiscount() {
+		if(Admin.discounts.getDiscounts() == "") {
 			return"There is no Discount rightnow..";
 		}else {
-			return "There is "+discounts.getDiscounts();
+			return "There is "+Admin.discounts.getDiscounts();
 		}
 	}
 	@GetMapping(value="/userWallet")
 	public String showWallet(@RequestBody User user) {
-		return this.wallet.showWallet(this);
+		return this.wallet.showWallet(user);
 	}
 	@PutMapping(value="/userWallet/{Amount}")
 	public String AddTOWallet( @RequestBody User user, @PathVariable ("Amount") double Amount) {
-		return this.wallet.AddtoWallet(this, Amount);
+		return this.wallet.AddtoWallet(user, Amount);
 	}
 	
 	public void update(boolean message) {

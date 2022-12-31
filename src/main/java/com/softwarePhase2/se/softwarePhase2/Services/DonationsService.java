@@ -39,8 +39,8 @@ public class DonationsService implements Service{
 		return obj.totalFees() + instance.fees;
 	}
 
-	@PostMapping(value="/AddDiscount/Donation")
-	public String AddDiscount(@RequestParam double discount) {
+
+	public String AddDiscount(double discount) {
 		GetInstance();
 		instance.fees-=discount;
 		return "Donation Service after discount is: " + instance.fees +"\n";

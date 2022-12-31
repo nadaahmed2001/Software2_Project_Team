@@ -3,7 +3,7 @@ package com.softwarePhase2.se.softwarePhase2.Services;
 public class DiscountDecorator implements Service {
 
 	Service s;
-	String discounts;
+	String discounts="";
 //	DiscountDecorator(Service service) {
 //	        this.s = service;
 //	    }

@@ -52,8 +52,8 @@ public class InternetPaymentService implements Service{
 				return instance.fees  + provider.totalFees(Amount);
 			}
 
-			@PostMapping(value="/AddDiscount/InternetPayment")
-			public String AddDiscount(@RequestParam double discount) {
+			
+			public String AddDiscount(double discount) {
 				GetInstance();
 				instance.fees-=discount;
 				return "InternetPayment Service after discount is: " + instance.fees +"\n";
