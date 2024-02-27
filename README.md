@@ -10,6 +10,7 @@
 
 # To build the project:
 <br>1- You should build the project using javaEE, Tomcat version 10.0,Spring boot
+
 <br>2-For spring boot, Use spring initiallizer with these Properties:
 <br>    Project:Maven
 <br>    Language:Java
@@ -18,4 +19,5 @@
 <br>    Dependecies: Spring Web , Lombok
     
 <br>3-the project depends on Java 11
+
 <br>4-Port: 8080
